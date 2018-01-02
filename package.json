@@ -4,7 +4,8 @@
   "description": "A short description of your language package",
   "keywords": [
     "language",
-    "grammar"
+    "grammar",
+    "IELE"
   ],
   "repository": "https://github.com/shd101wyy/language-iele",
   "license": "MIT",

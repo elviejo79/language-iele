@@ -3,4 +3,4 @@
 
 '.source.iele':
   'editor':
-    'commentStart': '@@ '
+    'commentStart': '// '

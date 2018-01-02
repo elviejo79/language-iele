@@ -2,13 +2,123 @@
 #   - http://manual.macromates.com/en/language_grammars
 
 'scopeName': 'source.iele'
-'name': 'PackageName'
+'name': 'IELE'
 'fileTypes': [
-  'extension'
+  'iele'
 ]
 'patterns': [
+  # comments
+  ## Line comments
   {
-    'match': '^\\s*@@.*$'
-    'name': 'comment'
+    'begin': '//'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.comment.line'
+    'end': '$'
+    'name': 'comment.line.double-slash'
+  }
+  ## block comments
+  {
+    'begin': '/\\*'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.comment.begin'
+    'end': '\\*/'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.comment.end'
+    'name': 'comment.block'
+  }
+  ## keywords
+  {
+    begin: "(?=(contract|define)\\s+)"
+    end: '((?=#)|(?=//)|(?=\n)|(?=\\()|(?={))'
+    comment: "Main keywords"
+    patterns: [
+      {
+        captures:
+          "1":
+            name: "keyword.control"
+        match: "\\b(contract|define)\\b"
+      }
+      {
+        captures:
+          "1":
+            name: "keyword.control"
+        match: "\\b(public)\\b"
+      }
+      {
+        captures:
+          "1":
+            name: "entity.name.function"
+          "2":
+            name: "keyword.control"
+          "3":
+            name: "entity.name.function"
+        match: "([A-Za-z_][A-Za-z0-9_]*)(?:\\s+(?:(is)|,)\\s+([A-Za-z_][A-Za-z0-9_]*))?"
+      }
+    ]
+  }
+  {
+    comment: "Language keywords"
+    match: "\\b(ret|revert|define|public|br)\\b"
+    name: "keyword.control"
+  }
+  # values
+	{
+		'match': '(%[a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*)\\b'
+		'name': 'variable.value.local.llvm'
+	}
+	{
+		'match': '(@[a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*)|@[0-9]+\\b'
+		'name': 'variable.value.global.llvm'
+	}
+	{
+		'match': '\\b([a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*\\:)'
+		'name': 'constant.other.basicblock.llvm'
+	}
+	{
+		'begin': '(%")'
+		'end': '(")'
+		'name': 'variable.value.global.llvm'
+	}
+	{
+		'begin': '(@")'
+		'end': '(")'
+		'name': 'variable.value.global.llvm'
+	}
+  # operator
+  {
+    comment: "Operator-1"
+    match: "\\b(call|staticcall|load|store|sload|sstore|log|create|copycreate|selfdestruct|deposit|init|send|gaslimit)\\b"
+    name: "keyword.operator"
+  }
+  {
+    comment: "Operator-2"
+    match:"\\b(iszero|not|add|sub|mul|div|exp|mod|addmod|mulmod|expmod|byte|sext|twos|and|or|xor|shift|cmp|lt|le|gt|ge|eq|ne|sha3)\\b"
+    name: "keyword.operator"
+  }
+  # true and false
+  {
+    comment: "True and false keywords"
+    match: "\\b(true|false)\\b"
+    name: "constant.language"
+  }
+  # returns
+  {
+    comment: "Returns"
+    match: "\\b(void)\\b"
+    name: "constant.language"
+  }
+  # number
+  {
+    comment: "Numbers"
+    match: "\\b(\\d+)\\b"
+    name: "constant.numeric"
+  }
+  {
+    comment: "Hexadecimal"
+    match: "\\b(0[xX][a-fA-F0-9]+)\\b"
+    name: "constant.numeric"
   }
 ]
