@@ -1,11 +1,12 @@
 {
   "name": "language-iele",
   "version": "0.0.2",
-  "description": "A short description of your language package",
+  "description": "Syntax highlighting for IELE",
   "keywords": [
     "language",
     "grammar",
-    "IELE"
+    "IELE",
+    "blockchain"
   ],
   "repository": "https://github.com/shd101wyy/language-iele",
   "license": "MIT",
