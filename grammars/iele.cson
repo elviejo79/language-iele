@@ -29,9 +29,9 @@
         'name': 'punctuation.definition.comment.end'
     'name': 'comment.block'
   }
-  ## keywords
+  ## define
   {
-    begin: "(?=(contract|define)\\s+)"
+    begin: "(?=(external|contract|define)\\s+)"
     end: '((?=#)|(?=//)|(?=\n)|(?=\\()|(?={))'
     comment: "Main keywords"
     patterns: [
@@ -39,13 +39,7 @@
         captures:
           "1":
             name: "keyword.control"
-        match: "\\b(contract|define)\\b"
-      }
-      {
-        captures:
-          "1":
-            name: "keyword.control"
-        match: "\\b(public)\\b"
+        match: "\\b(external|contract|define|public)\\b"
       }
       {
         captures:
@@ -59,34 +53,35 @@
       }
     ]
   }
+  # values
+  {
+    match: "(?:\\@|\\%)([A-Za-z0-9\\_\\-\\$]+)(?:(\\.)([A-Za-z0-9\\_\\-\\$]+))*"
+    captures:
+      "1":
+        name: "variable.object"
+      "2":
+        name: "keyword.operator"
+      "3":
+        name: "entity.name.function"
+  }
+	{
+		match: '(%[a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*)\\b'
+		name: 'variable.value.local'
+	}
+	{
+		match: '(@[a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*)|@[0-9]+\\b'
+		name: 'variable.value.global'
+	}
+	{
+		match: '\\b([a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*\\:)'
+		name: 'constant.other.basicblock'
+	}
+  # keywords
   {
     comment: "Language keywords"
     match: "\\b(ret|revert|define|public|br)\\b"
     name: "keyword.control"
   }
-  # values
-	{
-		'match': '(%[a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*)\\b'
-		'name': 'variable.value.local.llvm'
-	}
-	{
-		'match': '(@[a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*)|@[0-9]+\\b'
-		'name': 'variable.value.global.llvm'
-	}
-	{
-		'match': '\\b([a-zA-Z\\$\\._][a-zA-Z0-9\\$\\._]*\\:)'
-		'name': 'constant.other.basicblock.llvm'
-	}
-	{
-		'begin': '(%")'
-		'end': '(")'
-		'name': 'variable.value.global.llvm'
-	}
-	{
-		'begin': '(@")'
-		'end': '(")'
-		'name': 'variable.value.global.llvm'
-	}
   # operator
   {
     comment: "Operator-1"
