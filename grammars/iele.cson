@@ -12,19 +12,40 @@ patterns: [
   {
     include: "#comments"
   }
-  ## define
+  ## contract
   {
-    begin: "(?=(external|contract|define)\\s+)"
+    begin: "(?=(external|contract)\\s+)"
     end: "((?=#)|(?=//)|(?=\n)|(?=\\()|(?={))"
-    comment: "Main keywords"
+    comment: "Contract declaration"
     patterns: [
       {
-        match: "\\b(external|contract|define|public)\\b"
+        match: "\\b(contract|external)\\b"
         captures:
           "1":
             name: "keyword.control"
       }
       # Contract name
+      {
+        match: "([A-Za-z0-9\\_\\-\\$\\.]+|\"[^\"]+?\")"
+        captures:
+          "1":
+            name: "variable.object"
+      }
+    ]
+  }
+  ## define
+  {
+    begin: "(?=(define)\\s+)"
+    end: "((?=#)|(?=//)|(?=\n)|(?=\\()|(?={))"
+    comment: "Function declaration"
+    patterns: [
+      {
+        match: "\\b(public|define)\\b"
+        captures:
+          "1":
+            name: "keyword.control"
+      }
+      # Function name
       {
         match: "([@%]?)([A-Za-z0-9\\_\\-\\$\\.]+|\"[^\"]+?\")"
         captures:
