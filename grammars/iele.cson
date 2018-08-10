@@ -1,77 +1,87 @@
 # If this is your first time writing a language grammar, check out:
 #   - http://manual.macromates.com/en/language_grammars
 
-'scopeName': 'source.iele'
-'name': 'IELE'
-'fileTypes': [
-  'iele'
+scopeName: "source.iele"
+name: "IELE"
+fileTypes: [
+  "iele"
 ]
-'patterns': [
+patterns: [
   # comments
   ## Line comments
   {
-    include: '#comments'
+    include: "#comments"
   }
-  ## define
+  ## contract
   {
-    begin: "(?=(external|contract|define)\\s+)"
-    end: '((?=#)|(?=//)|(?=\n)|(?=\\()|(?={))'
-    comment: "Main keywords"
+    begin: "(?=(external|contract)\\s+)"
+    end: "((?=#)|(?=//)|(?=\n)|(?=\\()|(?={))"
+    comment: "Contract declaration"
     patterns: [
       {
-        match: "\\b(external|contract|define|public)\\b"
+        match: "\\b(contract|external)\\b"
         captures:
           "1":
             name: "keyword.control"
       }
-      {
-        'include': '#global_variable'
-      }
       # Contract name
       {
-        match: "([A-Za-z0-9\\_\\-\\$]+)(?:(\\.)([A-Za-z0-9\\_\\-\\$]+))*"
+        match: "([A-Za-z0-9\\_\\-\\$\\.]+|\"[^\"]+?\")"
         captures:
           "1":
             name: "variable.object"
+      }
+    ]
+  }
+  ## define
+  {
+    begin: "(?=(define)\\s+)"
+    end: "((?=#)|(?=//)|(?=\n)|(?=\\()|(?={))"
+    comment: "Function declaration"
+    patterns: [
+      {
+        match: "\\b(public|define)\\b"
+        captures:
+          "1":
+            name: "keyword.control"
+      }
+      # Function name
+      {
+        match: "([@%]?)([A-Za-z0-9\\_\\-\\$\\.]+|\"[^\"]+?\")"
+        captures:
+          "1":
+            name: "entity.name.function"
           "2":
-            name: "keyword.operator"
-          "3":
             name: "entity.name.function"
       }
     ]
   }
-  # variables
+  # variable 
   {
-    'include': '#global_variable'
-  }
-  {
-    'include': '#local_variable'
+    include: "#variable"
   }
   # label
 	{
-		match: '\\b([A-Za-z0-9\\_\\-\\$\\.]+\\:)'
-		name: 'constant.other.basicblock'
+		match: "\\b([A-Za-z0-9\\_\\-\\$\\.]+\\:)"
+		name: "constant.other.basicblock"
 	}
   # branch
   {
-    begin: '\\s*(br)'
+    begin: "\\s*(br)"
     beginCaptures:
-      '0':
-        'name': 'keyword.control'
-    end: '$'
+      "0":
+        "name": "keyword.control"
+    end: "$"
     patterns: [
       {
-        'include': '#global_variable'
+        "include": "#variable"
       }
       {
-        'include': '#local_variable'
+        match: "\\b([A-Za-z0-9\\_\\-\\$\\.]+)"
+    		name: "constant.other.basicblock"
       }
       {
-        match: '\\b([A-Za-z0-9\\_\\-\\$\\.]+)'
-    		name: 'constant.other.basicblock'
-      }
-      {
-        include: '#comments'
+        include: "#comments"
       }
     ]
   }
@@ -116,54 +126,37 @@
     name: "constant.numeric"
   }
 ]
-'repository':
-  'comments':
-    'patterns': [
+repository:
+  comments:
+    patterns: [
       {
-        'begin': '//'
-        'beginCaptures':
-          '0':
-            'name': 'punctuation.definition.comment.line'
-        'end': '$'
-        'name': 'comment.line.double-slash'
+        begin: "//"
+        beginCaptures:
+          "0":
+            name: "punctuation.definition.comment.line"
+        end: "$"
+        name: "comment.line.double-slash"
       }
       ## block comments
       {
-        'begin': '/\\*'
-        'beginCaptures':
-          '0':
-            'name': 'punctuation.definition.comment.begin'
-        'end': '\\*/'
-        'endCaptures':
-          '0':
-            'name': 'punctuation.definition.comment.end'
-        'name': 'comment.block'
+        begin: "/\\*"
+        beginCaptures:
+          "0":
+            name: "punctuation.definition.comment.begin"
+        end: "\\*/"
+        endCaptures:
+          "0":
+            "name": "punctuation.definition.comment.end"
+        name: "comment.block"
       }
     ]
-  'global_variable':
-    'patterns': [
-      {
-        match: "(?:\\@)([A-Za-z0-9\\_\\-\\$]+)(?:(\\.)([A-Za-z0-9\\_\\-\\$]+))*"
-        captures:
-          "1":
-            name: "variable.object"
-          "2":
-            name: "keyword.operator"
-          "3":
-            name: "entity.name.function"
-      }
-    ]
-  'local_variable':
-    'patterns': [
-      {
-        match: "(?:\\%)([A-Za-z0-9\\_\\-\\$]+)(?:(\\.)([A-Za-z0-9\\_\\-\\$]+))*"
-        captures:
-          "1":
-            name: "variable.other"
-          "2":
-            name: "keyword.operator"
-          "3":
-            name: "entity.name.function"
-      }
-    ]
+  variable:
+    patterns: [{
+      match: "([@%])([A-Za-z0-9\\_\\-\\$\\.]+|\"[^\"]+?\")",
+      captures:
+        "1":
+          name: "variable.other"
+        "2":
+          name: "variable.other"
+    }]
 
