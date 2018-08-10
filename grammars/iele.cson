@@ -153,10 +153,12 @@ repository:
   variable:
     patterns: [{
       match: "([@%])([A-Za-z0-9\\_\\-\\$\\.]+|\"[^\"]+?\")",
+      ###
       captures:
         "1":
           name: "variable.other"
         "2":
           name: "variable.other"
+      ###
     }]
 
